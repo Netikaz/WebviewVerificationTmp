@@ -1,0 +1,85 @@
+
+$font-title: 'Open Sans Condensed';
+$font-interface: 'Droid Serif', 'Georgia', serif;
+$font-content: 'Droid Serif', 'Georgia', serif;
+
+$color-blue: #0ab2ff;
+$color-blue-dark: #205576;
+$color-blue-light: lighten($color-blue, 10%);
+$color-orange: #EC6534;
+$color-red: #EE4122;
+$color-yellow: #ffc400;
+
+
+$color-grey-very-light: #F0F0F0;
+$color-grey-lighter: #dcdcdc;
+$color-grey-light: #d3d3d3;
+$color-grey: #CDCDCD;
+$color-grey-dark: #a5a5a5;
+$color-grey-darker: #848484;
+$color-grey-very-dark: #212121;
+
+$color-brand: $color-blue;
+
+@import 'fonts';
+@import 'lib/main';
+
+#header #main-title {
+  font-weight: bold;
+}
+
+#header #main-topic {
+  border: 1px solid transparent;
+  font-weight: bold;
+}
+
+#summary-text, #article.premium #summary-text {
+  color: black;
+  border-bottom: 1px solid $color-grey-very-light;
+}
+
+#metas, #article.premium #metas {
+  border-top: 1px solid $color-grey-very-light;
+  border-bottom: none;
+  margin: 10px 0;
+  text-align: left;
+  font-weight: bold;
+  width: auto;
+  color: $color-grey-darker;
+  text-transform: uppercase;
+}
+
+#metas strong, #article.premium #metas strong {
+  color: $color-grey-very-dark;
+}
+
+.article-subtitle {
+  font-family: $font-title;
+  font-weight: bold;
+  font-size: 1.2em;
+  padding-bottom: 0.2em;
+  margin-bottom: 0.4em;
+  color: black;
+  border-bottom: 1px solid $color-blue;
+}
+
+.encart {
+  border: 1px solid $color-blue;
+  border-left-width: 10px;
+  padding: 20px;
+}
+
+#main-content p.lettrine::first-letter {
+  background-color: $color-blue;
+  color: white;
+  padding: 20px;
+  font-size: 41px;
+  line-height: 41px;
+  font-weight: 300;
+  margin: 4px 8px -7px -3px;
+  font-family: $font-interface;
+  float: left;
+  display: block;
+  width: auto;
+  height: auto;
+}

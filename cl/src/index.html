@@ -1,0 +1,356 @@
+<!DOCTYPE HTML>
+<html class='@DEVICE_CLASS@ @ORIENTATION_CLASS@'>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<style type='text/css'>
+  {{STYLES}}
+
+  body {
+    border-left: 5px solid @COLOR_PRIMARY@;
+  }
+
+  #header #main-topic {
+    color: @COLOR_PRIMARY@;
+  }
+</style>
+
+<script type="text/javascript">
+//<![CDATA[
+  window.debug = @DEBUG@;
+  window.article = @JSON_ARTICLE@;
+  window.settings = @JSON_SETTINGS@;
+  window.constants = @JSON_CONSTANTS@;
+  window.relatedArticles = @JSON_RELATED_ARTICLES@;
+  window.debugContent = '';
+
+  var startTime = new Date()
+
+  function getTime() {
+    return (new Date() - startTime) + 'ms'
+  }
+
+  function getLine() {
+    var elements = new Error().stack.split('\\n')[2].split(':')
+    return elements[elements.length - 2] + ':' + elements[elements.length - 1]
+  }
+
+  window.log = function () {
+    if (debug) {
+      var debugDiv = document.querySelector('.debug')
+      var msg = '<div class="tag">' + getTime() + ' ' + getLine() + '</div>' +  Array.prototype.slice.call(arguments).join(' ') + '\\n'
+
+      if (debugDiv) {
+        debugDiv.innerHTML += msg
+      } else {
+        debugContent += msg;
+      }
+    }
+  }
+//]]>
+</script>
+</head>
+
+<body>
+<script type="text/javascript">
+    document.body.style.fontSize = settings.font_size;
+</script>
+<div id="article">
+  <div>
+    <script type='text/javascript'>
+      var publisherid = settings.dfp_publisherid;
+
+      log('device = @DEVICE_CLASS@')
+      log('orientation = @ORIENTATION_CLASS@')
+      log('screen = ' + screen.width + 'x' + screen.height)
+      log('article =', JSON.stringify(article, null, 2))
+      log('settings =', JSON.stringify(settings, null, 2))
+      log('constants =', JSON.stringify(constants, null, 2))
+
+      // Removing '/' for Android / iOS compatibility
+      publisherid = String(publisherid).replace(/[/]/g, '');
+      var slot = '/' + publisherid + '/' + article.dfp.bloc1 + '_appli';
+
+      if ( article.dfp.bloc2 ) {
+        slot += '/' + article.dfp.bloc2;
+      }
+      if ( article.dfp.bloc3 ) {
+        slot += '/' + article.dfp.bloc3;
+      }
+      if ( article.dfp.bloc4 ) {
+        slot += '/' + article.dfp.bloc4;
+      }
+      if ( article.dfp.bloc5 ) {
+        slot += '/' + article.dfp.bloc5;
+      }
+    </script>
+  </div>
+
+  @HEADER_EMBED@
+
+  <div id="header">
+    <div id="main-topic">@TOPIC@</div>
+    <div id="main-title"><script type='text/javascript'>document.write(article.title)</script></div>
+
+    <div id='metas'>
+      <div class='gutter'>
+        <script type="text/javascript">
+          if ("" !== article.author) {
+            document.write(constants.from + " <strong>" + article.author + "</strong>, ");
+          }
+
+          document.write("<div class='timeago' id='datetime' title='" + article.creation_date + "'>Publié le @DATE_ARTICLE@</div>");
+
+          var updateDate = '@DATE_UPDATE_ARTICLE@';
+          if (updateDate.length > 0) {
+            document.write("<div class='timeago' id='update-datetime' title='" + article.update_date + "'>Mis à jour le @DATE_UPDATE_ARTICLE@</div>");
+          }
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <div id='summary'>
+    <div id='summary-text'>
+      <div class='gutter'>
+        <script type='text/javascript'>
+          document.write(article.head_content)
+        </script>
+      </div>
+    </div>
+  </div>
+  <div id='main-content'>
+    <div class='gutter'>
+      <script type="text/javascript">
+        var content = article.main_content.split(/(?=<p>)/g)
+
+        if (relatedArticles.length) {
+          var inception = '<div class="article-inception"><h3>La rédaction vous conseille</h3><ul>' + relatedArticles.map(function (a) {
+            return '<li><a href="' + a[1] + '">' + a[0] + '</a></li>'
+          }).join('') + '</ul></div>'
+
+          content.splice(Math.min(content.length, 3), 0, inception)
+        }
+
+        document.write(content.join(''))
+      </script>
+
+      <script type='text/javascript'>
+        var mainContent = document.getElementById('main-content')
+        var firstParagraph = mainContent.querySelector('p')
+
+        if (firstParagraph) {
+          var content = firstParagraph.textContent.replace(/^(\\n|\t)+|(\\n|\t)+$/gm, '')
+
+          if (content.length >= 140 && /^[A-Z][a-z]/gm.test(content)) {
+            firstParagraph.classList.add('lettrine')
+          }
+        }
+      </script>
+
+      <script type='text/javascript'>
+        if(article.type === 'portfolio') {
+          article.pictures.forEach(function(picture) {
+            document.write(
+            '<figure>'+
+              '<img src='+ picture.url_03 + '/>' +
+              '<figcaption>' +
+                '<span>' + picture.legende + '</span>' +
+                '<em>' + picture.credit + '</em>' +
+              '</figcaption>' +
+            '</figure>')
+          });
+        }
+      </script>
+
+      <script type="text/javascript">
+       // document.write("<div class='image-credits'>Crédits photo : <span>" + article.pictures[0].credit + "</span></div>")
+      </script>
+
+    </div>
+  </div>
+
+  <div id="premium-overlay">
+    <div class="gutter">
+      <h4><span>Article</span> réservé aux abonnés</h4>
+
+      <p class='premium-overlay-text center'>
+        Profitez tous les jours de <strong>contenus et services exclusifs</strong> pour @TARIF_ABONNEMENT@ €/mois sans engagement
+      </p>
+
+      <div class='premium-images-row'>
+        <span class="premium-image large sprite2"></span>
+        <span class="premium-image large sprite3"></span>
+      </div>
+
+      <p class='center'>
+        <script type="text/javascript">
+          document.write("<a href='" + settings.subscription_link + "' class='premium-button'>J'en profite</a>");
+        </script>
+      </p>
+
+    </div>
+    <div class='premium-actions center'>
+      <div class='gutter'>
+        <script type="text/javascript">
+          document.write("<a href='" + settings.login_link + "'>Déjà abonné ? Je me connecte</a>");
+        </script>
+      </div>
+    </div>
+  </div>
+
+  <div id='complements'>
+    <script type="text/javascript">
+      function calcHeight() {
+        var c = document.getElementsByName("frame_complement");
+        for(var i = 0; i < c.length; i++ ) {
+          var h = c[i].contentWindow.document.body.scrollHeight;
+          c[i].height = h;
+        }
+      }
+    </script>
+
+    @COMPLEMENTS@
+  </div>
+
+  <script type="text/javascript">
+    window.isPremium = ( article.free != "1" ) && ( ! settings.check_access_article );
+
+    var articleDiv = document.getElementById('article');
+    var articleContent = articleDiv.querySelector('#main-content .gutter');
+
+    if ( isPremium ) {
+      document.getElementById('premium-overlay').style.display = 'block';
+      articleDiv.classList.add('premium');
+    } else {
+      document.getElementById('main-content').classList.add('visible')
+      document.getElementById('complements').classList.add('visible')
+    }
+
+    var inserts;
+    if(inserts = article.inserts[0]) {
+      if ( inserts.insert2_content && (inserts.insert2_content != '') ) {
+        var encart = document.createElement('div');
+        var html = '';
+        encart.className = 'encart';
+
+        if ( inserts.insert2_title && (inserts.insert2_title != '') ) {
+          html += "<h3>" + inserts.insert2_title + "</h3>";
+        }
+
+        html += "<p>" + inserts.insert2_content + "</p>";
+
+        encart.innerHTML = html;
+
+        var credits = articleContent.querySelector('.image-credits');
+        if (credits) {
+          credits.parentNode.insertBefore(encart, credits);
+        } else {
+          articleContent.appendChild(encart);
+        }
+      }
+
+      if ( inserts.insert1_content && (inserts.insert1_content != '') ) {
+        var encart = document.createElement('div');
+        var html = '';
+        encart.className = 'encart';
+
+        if ( inserts.insert1_title && (inserts.insert1_title != '') ) {
+          html += "<h3>" + inserts.insert1_title + "</h3>";
+        }
+
+        html += "<p>" + inserts.insert1_content + "</p>";
+
+        encart.innerHTML = html;
+
+        var firstParagraph = articleContent.querySelector('p');
+        if (firstParagraph) firstParagraph.parentNode.insertBefore(encart, firstParagraph.nextSibling);
+      }
+    }
+    sendObjcPageLoaded();
+  </script>
+
+  <!-- CHARGEMENT LIB DFP -->
+  <script type="text/javascript">
+    // Called when webview is displayed. Used to ad call
+    function onPageDisplayed(){
+
+      if ( isPremium ) {
+        // Paywall premium, we don't call the ad
+        return;
+      }
+      // On insere le bloc de pub apres le 1er paragraphe
+      var div = document.createElement('div');
+      div.id = 'div-pave_article';
+      var firstParagraph = document.querySelector('p:first-of-type');
+      if(firstParagraph) {
+        var insertPoint;
+        insertPoint = firstParagraph.nextSibling;
+        insertPoint.parentNode.insertBefore(div, insertPoint);
+
+        // On appelle la pub pour ce bloc quand on est pret
+        googletag.cmd.push(function() {
+            googletag.display("div-pave_article");
+        });
+      }
+    }
+
+    var googletag = googletag || {};
+    googletag.cmd = googletag.cmd || [];
+    (function() {
+      var gads = document.createElement("script");
+      gads.async = true;
+      gads.type = "text/javascript";
+      var useSSL = "https:" == document.location.protocol;
+      gads.src = (useSSL ? "https:" : "http:") + "//www.googletagservices.com/tag/js/gpt.js";
+      var node =document.getElementsByTagName("script")[0];
+      node.parentNode.insertBefore(gads, node);
+    })();
+
+    // enregistrement des pubs à charger
+    googletag.cmd.push(function() {
+      // pave article
+      googletag.defineSlot(slot, [300, 250], "div-pave_article")
+       .addService(googletag.pubads())
+       .setTargeting("position", "pave_article");
+
+      if (debug) { googletag.pubads().setTargeting('mode', 'debug') }
+
+      // targeting
+      if (typeof article.dfp_multi !== 'undefined') {
+        googletag.pubads().setTargeting("famille", article.dfp_multi.famille);
+        googletag.pubads().setTargeting("theme", article.dfp_multi.theme);
+        googletag.pubads().setTargeting("ville", article.dfp_multi.ville);
+        googletag.pubads().setTargeting("insee", article.dfp_multi.insee);
+        googletag.pubads().setTargeting("canton", article.dfp_multi.canton);
+        googletag.pubads().setTargeting("bdv", article.dfp_multi.bdv);
+        googletag.pubads().setTargeting("bdc1", article.dfp_multi.bdc1);
+        googletag.pubads().setTargeting("bdc2", article.dfp_multi.bdc2);
+        googletag.pubads().setTargeting("departement", article.dfp_multi.departement);
+      } else {
+        googletag.pubads().setTargeting("famille", article.dfp.famille);
+        googletag.pubads().setTargeting("theme", article.dfp.theme);
+        googletag.pubads().setTargeting("ville", article.dfp.ville);
+        googletag.pubads().setTargeting("insee", article.dfp.insee);
+        googletag.pubads().setTargeting("canton", article.dfp.canton);
+        googletag.pubads().setTargeting("bdv", article.dfp.bdv);
+        googletag.pubads().setTargeting("bdc1", article.dfp.bdc1);
+        googletag.pubads().setTargeting("bdc2", article.dfp.bdc2);
+        googletag.pubads().setTargeting("departement", article.dfp.departement);
+      }
+
+      googletag.pubads().enableSingleRequest();
+      googletag.pubads().collapseEmptyDivs(true);
+      googletag.enableServices();
+    });
+  </script>
+
+  <script type="text/javascript">
+    if (debug && debugContent != '') {
+      document.write('<div class="debug">' + debugContent + '</div>')
+    }
+  </script>
+</div>
+</body>
+</html>

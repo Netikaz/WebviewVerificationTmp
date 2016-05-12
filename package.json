@@ -1,0 +1,26 @@
+{
+  "name": "mobile-style-framework",
+  "version": "0.0.1",
+  "description": "The mobile styles for GSOI native apps",
+  "scripts": {
+    "cl:html": "node build_html.js cl",
+    "cl:sass": "node-sass cl/src/styles.scss cl/styles.css",
+    "rep:html": "node build_html.js rep",
+    "rep:sass": "node-sass rep/src/styles.scss rep/styles.css",
+    "so:html": "node build_html.js so",
+    "so:sass": "node-sass so/src/styles.scss so/styles.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GSOinteractive/mobile-style-framework.git"
+  },
+  "author": "GSOI",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/GSOinteractive/mobile-style-framework/issues"
+  },
+  "homepage": "https://github.com/GSOinteractive/mobile-style-framework#readme",
+  "devDependencies": {
+    "node-sass": "^3.4.2"
+  }
+}

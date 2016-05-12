@@ -1,0 +1,76 @@
+
+$font-title: 'Oswald';
+$font-interface: 'Open Sans';
+$font-content: 'Georgia';
+
+$color-blue-light: #4F96D4;
+$color-blue: #0159A1;
+$color-red: #F43F21;
+$color-blue-dark: #4d636e;
+$color-orange: #F54236;
+$color-yellow: #ffc400;
+
+$color-grey-very-light: #F0F0F0;
+$color-grey-lighter: #dcdcdc;
+$color-grey-light: #d3d3d3;
+$color-grey: #CDCDCD;
+$color-grey-dark: #a5a5a5;
+$color-grey-darker: #848484;
+$color-grey-very-dark: #212121;
+
+$color-brand: $color-red;
+
+@import 'fonts';
+@import 'lib/main';
+
+#header #main-title {
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+#header #main-topic {
+  padding: 0;
+  font-weight: 300;
+}
+
+#summary-text, #article.premium #summary-text {
+  color: black;
+}
+
+#metas, #article.premium #metas {
+  border-top: 1px solid $color-grey-very-light;
+  border-bottom: none;
+  margin: 16px 16px 0;
+  padding: 8px 0 0;
+  text-align: left;
+  font-weight: bold;
+  width: auto;
+  color: $color-grey-darker;
+}
+
+#metas strong, #article.premium #metas strong {
+  color: $color-grey-very-dark;
+}
+
+.article-subtitle {
+  font-family: $font-title;
+  font-weight: 300;
+  font-size: 1.4em;
+  padding-bottom: 0.2em;
+  margin-bottom: 0.4em;
+  border-bottom: 1px solid $color-blue;
+}
+
+#main-content p.lettrine::first-letter {
+  float: left;
+  padding: 0;
+  margin: 8px 6px -7px 0px;
+  font-size: 54px;
+  line-height: 58px;
+  color: $color-blue;
+  font-family: $font-interface;
+  font-weight: bold;
+  display: block;
+  width: auto;
+  height: auto;
+}

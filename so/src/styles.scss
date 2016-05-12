@@ -1,0 +1,41 @@
+
+$font-title: 'Oswald';
+$font-interface: 'Open Sans';
+$font-content: 'Georgia';
+
+$color-blue-light: #4F96D4;
+$color-blue: #5297d2;
+$color-blue-dark: #4d636e;
+$color-red: #db111f;
+$color-orange: #F54236;
+$color-yellow: #ffc400;
+
+$color-grey-very-light: #F0F0F0;
+$color-grey-lighter: #dcdcdc;
+$color-grey-light: #d3d3d3;
+$color-grey: #CDCDCD;
+$color-grey-dark: #a5a5a5;
+$color-grey-darker: #848484;
+$color-grey-very-dark: #212121;
+
+$color-brand: $color-red;
+
+@import 'fonts';
+@import 'lib/main';
+
+#main-content p.lettrine::first-letter {
+  float: left;
+  display: block;
+  width: auto;
+  height: auto;
+  font-size: 56px;
+  font-size: 5.6rem;
+  line-height: 56px;
+  line-height: 5.6rem;
+  margin: 0;
+  padding: 0;
+  margin-right: 8px;
+  margin-top: 8px;
+  color: $color-red;
+  font-family: $font-content;
+}
